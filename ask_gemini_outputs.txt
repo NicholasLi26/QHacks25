@@ -1,0 +1,197 @@
+images/syllabus1.png
+NO_IMPORTANT_DATES
+
+
+
+
+images/syllabus1.png
+images/syllabus1.png
+NO_IMPORTANT_DATES
+
+
+
+
+images/syllabus2.png
+Jan 6th
+Jan 8th
+Course Overview and Logistics
+Neurons and the Central Nervous System
+
+Jan 13th
+Jan 22nd
+Simple Neuron Models
+Hodgkin-Huxley Models
+Compartmental Models
+Synapses
+
+Jan 27th
+Feb 5th
+Low-level Visual Processing
+Perceptrons and Regression
+Intermediate and High-level Visual Processing
+Backpropagation and Convolutional Neural Networks
+
+Feb 10th
+Feb 24th
+Role in cognition and associated signalling
+Modelling memory
+Modelling spatial navigation
+
+Feb 26th
+Mar 5th
+Role in Cognition and Associated Signalling
+Models of BG - Functional
+Models of BG - Anatomical
+Reinforcement Learning
+
+Mar 10th
+Mar 12th
+The Motor Cortex
+The Cerebellum
+
+Mar 17th
+Apr 2nd
+The Neural Engineering Framework
+Numerical Cognition
+Fear Conditioning in Amygdala
+Recurrent Networks and Working Memory
+Biophysics of Drugs and Disorders
+Higher-level Cognition
+
+
+
+
+
+images/syllabus3.png
+Jan 29th
+Feb 12th
+Mar 5th
+Mar 19th
+Mar 19th
+Apr 23rd
+Assignment #1: Neuron Models
+Assignment #2: Primate Visual System
+Assignment #3: Hippocampus
+Assignment #4: Basal Ganglia
+Project Proposal
+Final Project Report
+
+
+
+
+
+images/mon.png
+Monday, Jan 20
+BME 393L - 001
+8:30AM
+11:20AM
+BME 355 - 101
+12:30PM
+1:20PM
+BME 355 - 001
+1:30PM
+2:20PM
+BME 361 - 001
+2:30PM
+4:20PM
+SYDE 552 - 001
+4:30PM
+6:20PM
+
+
+
+
+
+images/tue.png
+Tuesday
+BME 381 - 001
+9:30AM
+10:50AM
+BME 393 - 001
+11:00AM
+12:20PM
+PSYCH 236 - 001
+4:00PM
+5:20PM
+
+
+
+
+
+images/wed.png
+Wednesday
+BME 301 - 001
+12:30PM
+1:20PM
+BME 393 - 101
+1:30PM
+2:20PM
+BME 361 - 001
+2:30PM
+3:20PM
+BME 361 - 101
+3:30PM
+4:20PM
+SYDE 552 - 001
+4:30PM
+5:20PM
+SYDE 552 - 101
+5:30PM
+6:20PM
+
+
+
+images/thu.png
+Thursday
+BME 381 - 001
+9:30AM
+10:50AM
+BME 393 - 001
+11:00AM
+12:20PM
+PSYCH 236 - 001
+4:00PM
+5:20PM
+
+
+
+images/fri.png
+Friday
+BME 381 - 101
+9:30AM
+10:20AM
+BME 355 - 001
+10:30AM
+12:20PM
+
+
+
+['NO_IMPORTANT_DATES', '']
+
+
+
+['Jan 6th', 'Jan 8th', 'Course Overview and Logistics', 'Neurons and the Central Nervous System', '', 'Jan 13th', 'Jan 22nd', 'Simple Neuron Models', 'Hodgkin-Huxley Models', 'Compartmental Models', 'Synapses', '', 'Jan 27th', 'Feb 5th', 'Low-level Visual Processing', 'Perceptrons and Regression', 'Intermediate and High-level Visual Processing', 'Backpropagation and Convolutional Neural Networks', '', 'Feb 10th', 'Feb 24th', 'Role in cognition and associated signalling', 'Modelling memory', 'Modelling spatial navigation', '', 'Feb 26th', 'Mar 5th', 'Role in Cognition and Associated Signalling', 'Models of BG - Functional', 'Models of BG - Anatomical', 'Reinforcement Learning', '', 'Mar 10th', 'Mar 12th', 'The Motor Cortex', 'The Cerebellum', '', 'Mar 17th', 'Apr 2nd', 'The Neural Engineering Framework', 'Numerical Cognition', 'Fear Conditioning in Amygdala', 'Recurrent Networks and Working Memory', 'Biophysics of Drugs and Disorders', 'Higher-level Cognition', '', '']
+
+
+
+['Jan 29th', 'Feb 12th', 'Mar 5th', 'Mar 19th', 'Mar 19th', 'Apr 23rd', 'Assignment #1: Neuron Models', 'Assignment #2: Primate Visual System', 'Assignment #3: Hippocampus', 'Assignment #4: Basal Ganglia', 'Project Proposal', 'Final Project Report', '', '']
+
+
+
+['Monday, Jan 20', 'BME 393L - 001', '8:30AM', '11:20AM', 'BME 355 - 101', '12:30PM', '1:20PM', 'BME 355 - 001', '1:30PM', '2:20PM', 'BME 361 - 001', '2:30PM', '4:20PM', 'SYDE 552 - 001', '4:30PM', '6:20PM', '', '']
+
+
+
+['Tuesday', 'BME 381 - 001', '9:30AM', '10:50AM', 'BME 393 - 001', '11:00AM', '12:20PM', 'PSYCH 236 - 001', '4:00PM', '5:20PM', '', '']
+
+
+
+['Wednesday', 'BME 301 - 001', '12:30PM', '1:20PM', 'BME 393 - 101', '1:30PM', '2:20PM', 'BME 361 - 001', '2:30PM', '3:20PM', 'BME 361 - 101', '3:30PM', '4:20PM', 'SYDE 552 - 001', '4:30PM', '5:20PM', 'SYDE 552 - 101', '5:30PM', '6:20PM']
+
+
+
+['Thursday', 'BME 381 - 001', '9:30AM', '10:50AM', 'BME 393 - 001', '11:00AM', '12:20PM', 'PSYCH 236 - 001', '4:00PM', '5:20PM']
+
+
+
+['Friday', 'BME 381 - 101', '9:30AM', '10:20AM', 'BME 355 - 001', '10:30AM', '12:20PM']
