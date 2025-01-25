@@ -1,31 +1,35 @@
 import cv2
 import numpy as np
 
-# image = cv2.imread('image.png')
-
-# Use the cvtColor() function to grayscale the image
-# gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-
-# cv2.imshow('Grayscale', gray_image)
-# cv2.waitKey(0)  
-
-# Window shown waits for any key pressing event
-# cv2.destroyAllWindows()
-
-img = cv2.imread('./images/image.png')
+#import image
+img = cv2.imread('images/image2.png')
+#get height and width for future use
 height, width, channels = img.shape 
 
-gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+#increase contrast for terrible UW contrast schedule
+lab= cv2.cvtColor(img, cv2.COLOR_BGR2LAB)
+#Split into channels
+l_channel, a, b = cv2.split(lab)
 
+clahe = cv2.createCLAHE(clipLimit=10.0, tileGridSize=(8,8))
+#increase contrast of l channel
+cl = clahe.apply(l_channel*10)
+limg = cv2.merge((cl,a,b))
+enhanced_img = cv2.cvtColor(limg, cv2.COLOR_LAB2BGR)
+
+#convert to grayscale
+gray = cv2.cvtColor(enhanced_img, cv2.COLOR_BGR2GRAY)
+
+#initial thresholding and morph 
 gray2 = cv2.bitwise_not(gray)
 thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_OTSU )[1] 
-# thresh = cv2.adaptiveThreshold(gray2,255,cv2.ADAPTIVE_THRESH_MEAN_C,cv2.THRESH_BINARY_INV,11,2)
 kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (17,17))
 morph = cv2.morphologyEx(thresh, cv2.MORPH_OPEN, kernel)
 
-cv2.imwrite("test_morph1.jpg", morph)
-cv2.imwrite("test_thresh1.jpg", thresh)
+# cv2.imwrite("test_morph1.jpg", morph)
+# cv2.imwrite("test_thresh1.jpg", thresh)
 
+#adaptive thresholding for removal of horizontal lines as to find better bounding boxes
 thresh = cv2.adaptiveThreshold(morph,255,cv2.ADAPTIVE_THRESH_MEAN_C,cv2.THRESH_BINARY_INV,81,17)
 horizontal_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (25,1))
 
@@ -39,6 +43,7 @@ for c in cnts:
 morph = cv2.inpaint(morph, mask, 3, cv2.INPAINT_TELEA)
 morph = cv2.erode(morph, kernel, iterations=1)
 
+# creation of bounding boxes 
 boundbox = []
 boundbox_img = img.copy()
 contours = cv2.findContours(morph, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
@@ -47,7 +52,7 @@ contours = contours[0] if len(contours) == 2 else contours[1]
 
 for cont in contours:
     x, y, w, h = cv2.boundingRect(cont)
-    if (w < width / 2) and (w > width / 6):
+    if (w < width / 3) and (w > width / 6.5):
         
         if x > 1:
             x = x - 5
@@ -58,6 +63,7 @@ for cont in contours:
 
 boundbox.sort(key=lambda x: x[0])
 
+# cleaning up of duplicate days
 remove = []
 for i in range(1, len(boundbox)):
     if boundbox[i][0] == boundbox[i-1][0] or boundbox[i][0] - boundbox[i-1][0] < 10:
@@ -66,16 +72,18 @@ for i in range(1, len(boundbox)):
 for i in range(len(remove)-1, -1, -1):
     boundbox.pop(remove[i])
 
+#saving of cropped images
 i = 1
 for bbox in boundbox:
-    string = "day" + str(i) + ".jpg"
+    string = "scheduleImages/day" + str(i) + ".jpg"
     (x,y,w,h) = bbox
     if(w > 40):
         crop = img[y:y+h, x:x+w]
         cv2.imwrite(string, crop)
         i+=1
-cv2.imwrite("test_thresh.jpg", thresh)
-cv2.imwrite("test_gray.jpg", gray)
-cv2.imwrite("test_morph.jpg", morph)
-cv2.imwrite("test_boundbox.png", boundbox_img)
-cv2.waitKey(0)
+
+# cv2.imwrite("test_thresh.jpg", thresh)
+# cv2.imwrite("test_gray.jpg", gray)
+# cv2.imwrite("test_morph.jpg", morph)
+# cv2.imwrite("test_boundbox.png", boundbox_img)
+# cv2.waitKey(0)
