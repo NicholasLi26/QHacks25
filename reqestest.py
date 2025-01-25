@@ -2,7 +2,10 @@ import PIL.Image
 import google.generativeai as genai
 import time
 
-genai.configure(api_key="AIzaSyAXC_QCe5GQ6IbJvpKYRyB4eDQG3v8yBwA")
+with open('keys/gemini.txt', 'r') as file:
+    key = file.read()
+
+genai.configure(api_key=key)
 model = genai.GenerativeModel(model_name = "gemini-1.5-pro")
 
 def ask_gemini(prompt, images):
