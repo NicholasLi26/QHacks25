@@ -76,8 +76,8 @@ elif st.session_state.page == 1:
     container = st.empty()
     if imageParse(path):
         st.write_stream(stream_data("# Schedule Image Uploaded Successfully!"))
-        st.write_stream(stream_data("### If you would like to submit your Sylabus', please upload them now."))
-        uploadedSylabus = st.file_uploader("Upload Sylabus'", type=['pdf', 'docx', 'png', 'jpg'], accept_multiple_files=True)
+        st.write_stream(stream_data("### If you would like to add your syllabus, please upload them now."))
+        uploadedSylabus = st.file_uploader("Upload Syllabus'", type=['pdf', 'docx', 'png', 'jpg'], accept_multiple_files=True)
         for i in range(len(uploadedSylabus)):
         #for id, name, type, size in uploadedSylabus[i]:
             if uploadedSylabus[i].type == 'application/pdf':
@@ -101,11 +101,27 @@ elif st.session_state.page == 1:
 
 elif st.session_state.page == 2:
     container = st.empty()
-    st.write_stream(stream_data("# Sylabus' Uploaded Successfully!"))
-    st.write_stream(stream_data("## Feel free to type in any other activities you would like to add to your schedule! provide the days and start and end times please!"))
-    st.write_stream(stream_data("Note - you don't have to put in study time! I will do that for you"))
+    st.write_stream(stream_data("# Syllabuses Uploaded Successfully!"))
+    st.write_stream(stream_data("## Feel free to type in any other activities you would like to add to your schedule!"))
+    st.write_stream(stream_data("Note - you don't have to put in study time! I will do that for you :3"))
     st.write_stream(stream_data("When you are done, click the button below!"))
     
     extraOptions.append(st.text_input(""))
     if lastIndx + 1 == len(uploadedSylabus):
         st
+
+elif st.session_state.page == 3:
+    # idk loading stuff
+
+elif st.session_state.page == 4:
+    st.write_stream(stream_data("# How much time would you like to spend studying per week?"))
+    # slider: 0-50 hours (TOTALHOURS variable)
+
+    # st.write_stream(stream_data(f"That would be around {TOTALHOURS} hours per day!"))
+
+    st.write_stream(stream_data("# On a scale of 1 to 5, how difficult is each class?"))
+    # slider:
+
+    # TOTAL HOURS * SLIDERVALUE / TOTALSLIDERVALUES = CLASSHOURS time spent studying for that class
+    # for each class:
+    # st.write_stream(stream_data(f"{int(CLASSHOURS)} hours per week for {CLASSNAME}"))
