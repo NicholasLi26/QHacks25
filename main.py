@@ -4,6 +4,7 @@ import time
 import os
 import re
 import courses as c
+import calendarQH as cq
 
 
 class mainManagement:
@@ -11,6 +12,7 @@ class mainManagement:
         self.test = [['BME 393L - 001', '8:30AM', '11:20AM', 'BME 355 - 101', '12:30PM', '1:20PM', 'BME 355 - 001', '1:30PM', '2:20PM', 'BME 361 - 001', '2:30PM', '4:20PM', 'SYDE 552 - 001', '4:30PM', '6:20PM'], ['BME 381 - 001', '9:30AM', '10:50AM', 'BME 393 - 001', '11:00AM', '12:20PM', 'PSYCH 236 - 001', '4:00PM', '5:20PM'], ['BME 301 - 001', '12:30PM', '1:20PM', 'BME 393 - 101', '1:30PM', '2:20PM', 'BME 361 - 001', '2:30PM', '3:20PM', 'BME 361 - 101', '3:30PM', '4:20PM', 'SYDE 552 - 001', '4:30PM', '5:20PM', 'SYDE 552 - 101', '5:30PM', '6:20PM'], ['BME 381 - 001', '9:30AM', '10:50AM', 'BME 393 - 001', '11:00AM', '12:20PM', 'PSYCH 236 - 001', '4:00PM', '5:20PM'], ['BME 381 - 101', '9:30AM', '10:20AM', 'BME 355 - 001', '10:30AM', '12:20PM'], [], []]
         self.courseIDs = []
         self.courseList = []
+        self.cal = cq.calendarQH()
         # with open('keys/gemini.txt', 'r') as file:
         #     key = file.read()
 
@@ -21,39 +23,40 @@ class mainManagement:
     def initializeCalendar(self):
         for course in self.courseList:
             courseID = course.getCourseID()
-            start, end, day = course.getTimes()
+            list = course.getTimes()
+            for start, end, day in list:
+                self.cal.addEvent(courseID, day, start, end)
 
-            jan_days = {'mon': '06', 'tue': '07', 'wed': '08', 'thu': '09', 'fri': '10', 'sat': '11', 'sun': '12'}
-            mar_days = {'mon': '25', 'tue': '26', 'wed': '27', 'thu': '28', 'fri': '29', 'sat': '30', 'sun': '30'}
+            
 
-            ###
+            #
             # Refer to the Python quickstart on how to setup the environment:
             # https://developers.google.com/calendar/quickstart/python
             # Change the scope to 'https://www.googleapis.com/auth/calendar' and delete any
             # stored credentials.
 
-            recurring_course = {
-            'summary': courseID,
-            'start': {
-                'dateTime': f'2025-01-{jan_days[day]}T{start}:00.000',
-                'timeZone': 'America/Toronto'
-            },
-            'end': {
-                'dateTime': f'2011-01-{jan_days[day]}T{end}:00.000',
-                'timeZone': 'America/Toronto'
-            },
-            'recurrence': [
-                f'RRULE:FREQ=WEEKLY;UNTIL=202503{mar_days[day]}T170000Z',
-            ],
-            }
+            # recurring_course = {
+            # 'summary': courseID,
+            # 'start': {
+            #     'dateTime': f'2025-01-{jan_days[day]}T{start}:00.000',
+            #     'timeZone': 'America/Toronto'
+            # },
+            # 'end': {
+            #     'dateTime': f'2011-01-{jan_days[day]}T{end}:00.000',
+            #     'timeZone': 'America/Toronto'
+            # },
+            # 'recurrence': [
+            #     f'RRULE:FREQ=WEEKLY;UNTIL=202503{mar_days[day]}T170000Z',
+            # ],
+            # }
 
-            recurring_event = service.events().insert(calendarId='primary', body=recurring_course).execute()
+            #recurring_event = service.events().insert(calendarId='primary', body=recurring_course).execute()
             # calendar object for google calendar? haven't really properly investigated the rest of the api to know what to do with this but there's a python setup guide
 
             # print recurring_event['id']
 
 
-            ###
+            #
 
 
     def initializeCourse(self, id, start=None, end=None, day=None):
@@ -133,8 +136,7 @@ m = mainManagement()
 # m.ProcessSyllabus()
 # m.ProcessSchedule()
 m.calendarSchedule()
-for course in m.courseList:
-    print(course.getCourseID())
-    print(course.getTimes())
-    print(course.getDays())
-    print("\n")
+m.initializeCalendar()
+print(m.cal.getDay("tue")
+)# m.cal.printCalendar()
+print(m.cal.freeTimes)

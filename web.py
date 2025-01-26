@@ -16,6 +16,18 @@ if "page" not in st.session_state:
 if "main" not in st.session_state:
     st.session_state.main = m.mainManagement()
 
+if "sleeptime" not in st.session_state:
+    st.session_state.sleeptime = 0
+
+if "studytime" not in st.session_state:
+    st.session_state.studytime = 0
+
+if "prioLessBusy" not in st.session_state:
+    st.session_state.prioLessBusy = False
+
+if "wakeuptime" not in st.session_state:
+    st.session_state.wakeuptime = 0
+
 def nextpage():
     st.session_state.page += 1
 
@@ -26,6 +38,10 @@ def upload():
 
 def uploadSylabus():
     st.session_state.page += 1
+
+def getSleep():
+    st.session_state.page += 1
+    st.session_state.main.setSleepAndWake(st.session_state.sleeptime, st.session_state.wakeuptime)
     
         # else:
         #     # st.write("docx")
@@ -132,15 +148,28 @@ elif st.session_state.page == 2:
 elif st.session_state.page == 3:
     st.session_state.main.ProcessSchedule()
     st.session_state.main.ProcessSyllabus()
+    st.write_stream(stream_data("# Proccessing!"))
+    st.button("Done", on_click=nextpage)
 
 elif st.session_state.page == 4:
-    st.write_stream(stream_data("# How much time would you like to spend studying per week?"))
-    # slider: 0-50 hours (TOTALHOURS variable)
+    st.write("# How much time would you like to spend studying per week?")
+    st.session_state.studytime = round(st.slider("Hours per Week", 0, 50, 0))
 
-    # st.write_stream(stream_data(f"That would be around {TOTALHOURS} hours per day!"))
+    st.write("# How many hours of sleep are you going to try to get a night?")
+    st.session_state.sleeptime = round(st.slider("Hours per Day", 6, 12, 0))
 
-    st.write_stream(stream_data("# On a scale of 1 to 5, how difficult is each class?"))
-    # slider:
+    st.write("# How many hours does it take for you to get up?")
+    st.session_state.wakeuptime = round(st.slider("Hours per Day", 1, 3, 0))
+    
+    st.write("### Would you rather study more on days with less classes?")
+
+    st.session_state.prioLessBusy = st.checkbox("Yes")
+
+    st.button("Done", on_click=getSleep)
+
+    
+
+
 
     # TOTAL HOURS * SLIDERVALUE / TOTALSLIDERVALUES = CLASSHOURS time spent studying for that class
     # for each class:

@@ -10,7 +10,7 @@ class courses:
         self.ranking = ranking
     
     def addTime(self, start, end, day):
-        self.times.append((start, end, day))
+        self.times.append([start, end, day])
         self.days.append(day)
 
     def getTimes(self):
