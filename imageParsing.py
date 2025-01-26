@@ -7,6 +7,8 @@ def imageParse(path):
     #get height and width for future use
     height, width, channels = img.shape 
 
+    saved = False
+
     #increase contrast for terrible UW contrast schedule
     lab= cv2.cvtColor(img, cv2.COLOR_BGR2LAB)
     #Split into channels
@@ -81,8 +83,9 @@ def imageParse(path):
         if(w > 40):
             crop = img[y:y+h, x:x+w]
             cv2.imwrite(string, crop)
+            saved = True
             i+=1
-
+    return saved
     # cv2.imwrite("test_thresh.jpg", thresh)
     # cv2.imwrite("test_gray.jpg", gray)
     # cv2.imwrite("test_morph.jpg", morph)

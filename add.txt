@@ -1,0 +1,4 @@
+
+page 2 - imputting strings of Gemeni prompts, displays a list of them below text box
+page 3 - loading page as we process data
+page 4 - difficulty of courses - sliders or dropdowns, num of study hours, num of free time hours
