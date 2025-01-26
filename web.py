@@ -108,7 +108,7 @@ elif st.session_state.page == 2:
     container = st.empty()
     st.write_stream(stream_data("# Sylabus' Uploaded Successfully!"))
     st.write_stream(stream_data("## Feel free to type in any other activities you would like to add to your schedule! provide the days and start and end times please!"))
-    st.write_stream(stream_data("Note - you don't have to put in study times! We will do that for you"))
+    st.write_stream(stream_data("Note - you don't have to put in study times! We will do that for you :3"))
     st.write_stream(stream_data("When you are done, click the button below!"))
     
     if 'something' not in st.session_state:

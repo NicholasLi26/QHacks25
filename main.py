@@ -18,6 +18,44 @@ class mainManagement:
 
         # self.model = genai.GenerativeModel(model_name = "gemini-1.5-flash")
 
+    def initializeCalendar(self):
+        for course in self.courseList:
+            courseID = course.getCourseID()
+            start, end, day = course.getTimes()
+
+            jan_days = {'mon': '06', 'tue': '07', 'wed': '08', 'thu': '09', 'fri': '10', 'sat': '11', 'sun': '12'}
+            mar_days = {'mon': '25', 'tue': '26', 'wed': '27', 'thu': '28', 'fri': '29', 'sat': '30', 'sun': '30'}
+
+            ###
+            # Refer to the Python quickstart on how to setup the environment:
+            # https://developers.google.com/calendar/quickstart/python
+            # Change the scope to 'https://www.googleapis.com/auth/calendar' and delete any
+            # stored credentials.
+
+            recurring_course = {
+            'summary': courseID,
+            'start': {
+                'dateTime': f'2025-01-{jan_days[day]}T{start}:00.000',
+                'timeZone': 'America/Toronto'
+            },
+            'end': {
+                'dateTime': f'2011-01-{jan_days[day]}T{end}:00.000',
+                'timeZone': 'America/Toronto'
+            },
+            'recurrence': [
+                f'RRULE:FREQ=WEEKLY;UNTIL=202503{mar_days[day]}T170000Z',
+            ],
+            }
+
+            recurring_event = service.events().insert(calendarId='primary', body=recurring_course).execute()
+            # calendar object for google calendar? haven't really properly investigated the rest of the api to know what to do with this but there's a python setup guide
+
+            # print recurring_event['id']
+
+
+            ###
+
+
     def initializeCourse(self, id, start=None, end=None, day=None):
         if id not in self.courseIDs:
             self.courseIDs.append(id)
