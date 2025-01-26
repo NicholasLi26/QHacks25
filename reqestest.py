@@ -45,6 +45,7 @@ def process_gemini(responses):
     months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"]
 
     for response in responses:
+
         isitschedule = 0
 
         for i, day in enumerate(days):
@@ -53,6 +54,8 @@ def process_gemini(responses):
                 isitschedule = 1
 
         if isitschedule==0:
+            course_code = response[-1]
+            response = response[:-1]
 
             if any(month in response[0].lower() for month in months) and any(month in response[1].lower() for month in months) and not any(month in response[2].lower() for month in months):
                 #proceed as ranges
@@ -66,12 +69,14 @@ def process_gemini(responses):
                     start = start_dates[i]
                     end = start_dates[i+1] if i+1<len(start_dates) else len(response)
                     events.append(response[start:end])
+                    events[-1].append(course_code)
 
             else:
                 #proceed as single dates
 
                 for i in range(int(len(response)/2)):
                     events.append([response[i], response[i+int(len(response)/2)]])
+                    events[-1].append(course_code)
 
     return (schedule, events)
 
