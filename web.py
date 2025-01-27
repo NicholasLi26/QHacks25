@@ -79,11 +79,7 @@ if st.session_state.page == 0:
     # Hello! Welcome to Palendar!
     ### Palendar is a web app that helps to allocate your time efficiently by generating a schedule based on your courses and preferences.
     ### To get started, please upload an image of your schedule.
-    """
-    # st.write("# Hello! Welcome to Palendar!")
-    # st.write("### Palendar is a web app that helps to allocate your time efficiently by generating a schedule based on your courses and preferences.")
-    # st.write("### To get started, please upload an image of your schedule.")
-    
+    """    
     st.write_stream(stream_data(firstPage))
 
     uploadedSched = st.file_uploader("Upload Schedule Image", type=['png', 'jpg'])
