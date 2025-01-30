@@ -35,6 +35,19 @@ def ask_gemini(model, prompt, images):
 
     return responses
 
+def ask_gemini_Text(model, prompts):
+    responses = []
+
+    for prompt in prompts:
+        input = "What is the main event listed here? If only a weekday is given with times, please assume it is a repeating event. Otherwise, a month and day must be given. Please give output in list format. First value being a boolean value as to whether of not the event is repeating, the second value being the event name, the third value being the start time, and the fourth value being the end time. If the event is repeating, the fifth value should be the day of the week the event is on abreviated to three letters. If the event is not repeating, the fifth value should be the month and day the event is on in a tuple. Please only print the list, no other text. Thank you! Input: " + prompt
+        response = model.generate_content([input])
+
+        responses.append(response.text)
+
+        time.sleep(2)
+
+    return responses
+
 
 
 def process_gemini(responses):

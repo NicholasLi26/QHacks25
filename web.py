@@ -148,6 +148,8 @@ elif st.session_state.page == 3:
     st.button("Done", on_click=nextpage)
 
 elif st.session_state.page == 4:
+    st.write("#This input section helps to optimize your schedule based on your preferences! It takes into account sleep as to set study times accordingly.")
+
     st.write("# How much time would you like to spend studying per week?")
     st.session_state.studytime = round(st.slider("Hours per Week", 0, 50, 0))
 
@@ -155,7 +157,11 @@ elif st.session_state.page == 4:
     st.session_state.sleeptime = round(st.slider("Hours per Day", 6, 12, 0))
 
     st.write("# How many hours does it take for you to get up?")
-    st.session_state.wakeuptime = round(st.slider("Hours per Day", 1, 3, 0))
+    st.session_state.wakeuptime = round(st.slider("Hours per Day", 0, 3, 0))
+
+    st.write("#On days with no morning classes, what time would you like to wake up?")
+    st.write("If your morning classes interfere, wake up times will automatically be adjusted.")
+    st.session_state.main.setIdeal(st.time_input("Wake Up Time", 5, 12, 0))
     
     st.write("### Would you rather study more on days with less classes?")
 

@@ -42,6 +42,7 @@ class calendarQH:
         for weekInd in range(0, 12):
             for dayInd in range(0, 7):
                 day = self.weekObj[weekInd][dayInd]
+                day.setWakeTime(self.wake)
                 earliest = day.getEarliest()
                 if earliest == None:
                     if self.ideal - self.sleep >= 0:
@@ -61,7 +62,7 @@ class calendarQH:
                     earliestH = int(earliest.split(":")[0])
                     earliestT = int(float(earliest.split(":")[1])/10)                    
                     if earliestH < self.ideal + self.wake:
-                        print(day.day,  str((24-(self.sleep - earliestH + self.wake))%24) + ":" + str(earliestT*10),str(earliestH-self.wake) + ":" + str(earliestT*10))
+                        #print(day.day,  str((24-(self.sleep - earliestH + self.wake))%24) + ":" + str(earliestT*10),str(earliestH-self.wake) + ":" + str(earliestT*10))
                         day.addSleepAM(str(earliestH-self.wake) + ":" + str(earliestT*10))
 
                         if earliestH - self.sleep - self.wake >= 0:
@@ -71,15 +72,15 @@ class calendarQH:
                             day.addSleepAM(str(earliestH - self.wake) + ":" + str(earliestT*10))
                             if dayInd == 0 and weekInd != 0:
                                 dayPrevious = self.weekObj[weekInd-1][6]
-                                print (str(24-(self.sleep - earliestH + self.wake)) + ":" + str(earliestT*10))
+                                #print (str(24-(self.sleep - earliestH + self.wake)) + ":" + str(earliestT*10))
                                 dayPrevious.addSleepPM(str(24-(self.sleep - earliestH + self.wake)) + ":" + str(earliestT*10))
                             elif dayInd != 0:
                                 dayPrevious = self.weekObj[weekInd][dayInd-1]
-                                print (str(24-(self.sleep - earliestH + self.wake)) + ":" + str(earliestT*10))
+                                #print (str(24-(self.sleep - earliestH + self.wake)) + ":" + str(earliestT*10))
                                 dayPrevious.addSleepPM(str(24-(self.sleep - earliestH + self.wake)) + ":" + str(earliestT*10))
                     
                     else:
-                        print(day.day, str(24 - (self.sleep-self.ideal) ) + ":00", str(self.ideal) + ":00")
+                        #print(day.day, str(24 - (self.sleep-self.ideal) ) + ":00", str(self.ideal) + ":00")
                         if self.ideal - self.sleep >= 0:
                             day.addSleepSameDay(str(self.ideal-self.sleep) + ":00", str(self.ideal) + ":00")
                     
@@ -92,6 +93,7 @@ class calendarQH:
                             elif dayInd != 0:
                                 dayPrevious = self.weekObj[weekInd][dayInd-1]
                                 dayPrevious.addSleepPM(str(24 - (self.ideal-self.sleep) ) + ":00")
+                day.addWake()
 
     def addEvent(self, event, day, start, end):
         #print(event, day, start, end)

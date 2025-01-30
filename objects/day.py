@@ -9,6 +9,7 @@ class day:
         self.month = month
         self.events = []
         self.freeTimeRemoved = 0
+        self.wake = 0
     
     def addEvent(self, event, start, end):
         
@@ -49,6 +50,9 @@ class day:
             print(f"Event could not be added for event {event}")
         return added
     
+    def setWakeTime(self, wake):
+        self.wake = wake
+    
     def freeTimeChange(self):
         counter = 0
         for hour in self.hours:
@@ -56,6 +60,7 @@ class day:
         
         self.freeTime = counter
         self.removeTenMinuteBlocks()
+        self.freeTime -= self.wake*6
 
     
     def getFreeTime(self):
@@ -88,7 +93,7 @@ class day:
         sleepT = int(float(sleep.split(":")[1])/10)
         
         if sleepH != 23:
-            for x in range(sleepH, 24):
+            for x in range(sleepH+1, 24):
                 self.hours[x].fillHour("Sleep")
         self.hours[sleepH].start("Sleep", sleepT)
 
@@ -111,7 +116,25 @@ class day:
                     return (temp)
         
         return None
-        
+
+    def addWake(self):
+        last = ""
+        setTrigger = False
+        ind = [0,0]
+        counter = 0
+        for hourInd in range(0, 24):
+            for tenInd in range(0, 6):
+                if setTrigger:
+                    if counter < self.wake*6 -1:
+                        self.hours[hourInd].tens[tenInd] = "Wake"
+                        counter += 1
+                else:
+                    if self.hours[hourInd].tens[tenInd] == "Empty":
+                        if last == "Sleep":
+                            setTrigger = True
+                            self.hours[hourInd].tens[tenInd] = "Wake"
+                    last = self.hours[hourInd].tens[tenInd]
+
     
     def getAll(self):
         return self.day, self.month, self.num, self.freeTime

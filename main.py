@@ -1,10 +1,12 @@
 #from reqestest import ask_gemini, process_gemini
+import PIL.Image
 import google.generativeai as genai
 import time
 import os
 import re
 import objects.courses as c
 import calendarQH as cq
+from reqestest import ask_gemini, process_gemini, ask_gemini_Text
 
 
 class mainManagement:
@@ -13,12 +15,12 @@ class mainManagement:
         self.courseIDs = []
         self.courseList = []
         self.cal = cq.calendarQH()
-        # with open('keys/gemini.txt', 'r') as file:
-        #     key = file.read()
+        with open('keys/gemini.txt', 'r') as file:
+            key = file.read()
 
-        # genai.configure(api_key=key)
+        genai.configure(api_key=key)
 
-        # self.model = genai.GenerativeModel(model_name = "gemini-1.5-flash")
+        self.model = genai.GenerativeModel(model_name = "gemini-1.5-flash")
 
     def initializeCalendar(self):
         for course in self.courseList:
@@ -146,10 +148,8 @@ m.initializeCalendar()
 #m.initialize1Event()
 m.cal.printWeekThings(0)
 m.cal.setSleepAndWake("8:00", 8, 2)
-m.cal.printWeekThings(0)
 
 m.cal.insertSleep()
-print(m.cal.weekObj[1][1].getAllHours())
 print(m.cal.weekObj[1][1].getFreeTime())
-print(m.cal.weekObj[1][1].printFreeTimes())
-print(m.cal.weekObj[1][1].freeTimeRemoved)
+print(m.cal.weekObj[1][0].getAllHours())
+print(m.cal.weekObj[1][1].getAllHours())
