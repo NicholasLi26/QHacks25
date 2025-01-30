@@ -3,7 +3,7 @@ import google.generativeai as genai
 import time
 import os
 import re
-import courses as c
+import objects.courses as c
 import calendarQH as cq
 
 
@@ -24,6 +24,7 @@ class mainManagement:
         for course in self.courseList:
             courseID = course.getCourseID()
             list = course.getTimes()
+            #print( courseID, list)
             for start, end, day in list:
                 self.cal.addEvent(courseID, day, start, end)
 
@@ -58,6 +59,11 @@ class mainManagement:
 
             #
 
+    def initialize1Event(self):
+        courseID = self.courseList[1].getCourseID()
+        list = self.courseList[1].getTimes()
+        for start, end, day in list:
+            self.cal.addEvent(courseID, day, start, end)
 
     def initializeCourse(self, id, start=None, end=None, day=None):
         if id not in self.courseIDs:
@@ -137,6 +143,13 @@ m = mainManagement()
 # m.ProcessSchedule()
 m.calendarSchedule()
 m.initializeCalendar()
-print(m.cal.getDay("tue")
-)# m.cal.printCalendar()
-print(m.cal.freeTimes)
+#m.initialize1Event()
+m.cal.printWeekThings(0)
+m.cal.setSleepAndWake("8:00", 8, 2)
+m.cal.printWeekThings(0)
+
+m.cal.insertSleep()
+print(m.cal.weekObj[1][1].getAllHours())
+print(m.cal.weekObj[1][1].getFreeTime())
+print(m.cal.weekObj[1][1].printFreeTimes())
+print(m.cal.weekObj[1][1].freeTimeRemoved)

@@ -7,7 +7,7 @@ from PIL import Image
 from imageParsing import imageParse
 import os
 from pdf2image import convert_from_bytes
-import queriesObj as qo
+import objects.queriesObj as qo
 import main as m
 
 if "page" not in st.session_state:
