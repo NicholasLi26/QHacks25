@@ -12,15 +12,17 @@ from reqestest import ask_gemini, process_gemini, ask_gemini_Text
 class mainManagement:
     def __init__(self):
         self.test = [['BME 393L - 001', '8:30AM', '11:20AM', 'BME 355 - 101', '12:30PM', '1:20PM', 'BME 355 - 001', '1:30PM', '2:20PM', 'BME 361 - 001', '2:30PM', '4:20PM', 'SYDE 552 - 001', '4:30PM', '6:20PM'], ['BME 381 - 001', '9:30AM', '10:50AM', 'BME 393 - 001', '11:00AM', '12:20PM', 'PSYCH 236 - 001', '4:00PM', '5:20PM'], ['BME 301 - 001', '12:30PM', '1:20PM', 'BME 393 - 101', '1:30PM', '2:20PM', 'BME 361 - 001', '2:30PM', '3:20PM', 'BME 361 - 101', '3:30PM', '4:20PM', 'SYDE 552 - 001', '4:30PM', '5:20PM', 'SYDE 552 - 101', '5:30PM', '6:20PM'], ['BME 381 - 001', '9:30AM', '10:50AM', 'BME 393 - 001', '11:00AM', '12:20PM', 'PSYCH 236 - 001', '4:00PM', '5:20PM'], ['BME 381 - 101', '9:30AM', '10:20AM', 'BME 355 - 001', '10:30AM', '12:20PM'], [], []]
+        self.testSyllabus = ['Jan 29th', 'Feb 12th', 'Mar 5th', 'Mar 19th', 'Mar 19th', 'Apr 23rd', 'Assignment #1: Neuron Models', 'Assignment #2: Primate Visual System', 'Assignment #3: Hippocampus', 'Assignment #4: Basal Ganglia', 'Project Proposal', 'Final Project Report', '', '']
+        self.testSyllabus2 = ['Jan 6th', 'Jan 8th', 'Course Overview and Logistics', 'Neurons and the Central Nervous System', '', 'Jan 13th', 'Jan 22nd', 'Simple Neuron Models', 'Hodgkin-Huxley Models', 'Compartmental Models', 'Synapses', '', 'Jan 27th', 'Feb 5th', 'Low-level Visual Processing', 'Perceptrons and Regression', 'Intermediate and High-level Visual Processing', 'Backpropagation and Convolutional Neural Networks', '', 'Feb 10th', 'Feb 24th', 'Role in cognition and associated signalling', 'Modelling memory', 'Modelling spatial navigation', '', 'Feb 26th', 'Mar 5th', 'Role in Cognition and Associated Signalling', 'Models of BG - Functional', 'Models of BG - Anatomical', 'Reinforcement Learning', '', 'Mar 10th', 'Mar 12th', 'The Motor Cortex', 'The Cerebellum', '', 'Mar 17th', 'Apr 2nd', 'The Neural Engineering Framework', 'Numerical Cognition', 'Fear Conditioning in Amygdala', 'Recurrent Networks and Working Memory', 'Biophysics of Drugs and Disorders', 'Higher-level Cognition', '', '']
         self.courseIDs = []
         self.courseList = []
         self.cal = cq.calendarQH()
-        with open('keys/gemini.txt', 'r') as file:
-            key = file.read()
+        # with open('keys/gemini.txt', 'r') as file:
+        #     key = file.read()
 
-        genai.configure(api_key=key)
+        # genai.configure(api_key=key)
 
-        self.model = genai.GenerativeModel(model_name = "gemini-1.5-flash")
+        # self.model = genai.GenerativeModel(model_name = "gemini-1.5-flash")
 
     def initializeCalendar(self):
         for course in self.courseList:
@@ -29,37 +31,6 @@ class mainManagement:
             #print( courseID, list)
             for start, end, day in list:
                 self.cal.addEvent(courseID, day, start, end)
-
-            
-
-            #
-            # Refer to the Python quickstart on how to setup the environment:
-            # https://developers.google.com/calendar/quickstart/python
-            # Change the scope to 'https://www.googleapis.com/auth/calendar' and delete any
-            # stored credentials.
-
-            # recurring_course = {
-            # 'summary': courseID,
-            # 'start': {
-            #     'dateTime': f'2025-01-{jan_days[day]}T{start}:00.000',
-            #     'timeZone': 'America/Toronto'
-            # },
-            # 'end': {
-            #     'dateTime': f'2011-01-{jan_days[day]}T{end}:00.000',
-            #     'timeZone': 'America/Toronto'
-            # },
-            # 'recurrence': [
-            #     f'RRULE:FREQ=WEEKLY;UNTIL=202503{mar_days[day]}T170000Z',
-            # ],
-            # }
-
-            #recurring_event = service.events().insert(calendarId='primary', body=recurring_course).execute()
-            # calendar object for google calendar? haven't really properly investigated the rest of the api to know what to do with this but there's a python setup guide
-
-            # print recurring_event['id']
-
-
-            #
 
     def initialize1Event(self):
         courseID = self.courseList[1].getCourseID()
@@ -76,6 +47,14 @@ class mainManagement:
             for course in self.courseList:
                 if course.getCourseID() == id:
                     course.addTime(start, end, day)
+    
+    def initializeSyllabus(self, syllabus):
+        assignmentOrTopic = False
+        if '' in syllabus:
+            assignmentOrTopic = True
+            syllabus.split('')
+
+        #if assignmentOrTopic
 
 
     def ProcessSchedule(self):
@@ -112,14 +91,18 @@ class mainManagement:
             
             for subject, start, end in daySplit:
                 subject = subject.split(" - ")[0]
-                half = start[-2:]
-                if half == "AM":
+                halfS = start[-2:]
+                halfE = end[-2:]
+                if halfS == "AM":
                     start = start[:-2]
                     if start.split(":")[0] == "12":
                         start = "00:" + start.split(":")[1]
                     end = end[:-2]
-                    if end.split(":")[0] == "12":
-                        end = "00:" + end.split(":")[1]
+                    if halfE == "PM":
+                        if end.split(":")[0] == "12":
+                            end = "12:" + end.split(":")[1]
+                        else:
+                            end = str(int(end.split(":")[0]) + 12) + ":" + end.split(":")[1]
                 else:
                     start = start[:-2]
                     if start.split(":")[0] != "12":
@@ -150,6 +133,17 @@ m.cal.printWeekThings(0)
 m.cal.setSleepAndWake("8:00", 8, 2)
 
 m.cal.insertSleep()
+
+day = m.cal.weekObj[0][0]
+
+
 print(m.cal.weekObj[1][1].getFreeTime())
 print(m.cal.weekObj[1][0].getAllHours())
 print(m.cal.weekObj[1][1].getAllHours())
+print(m.cal.weekObj[1][2].getAllHours())
+for course in m.courseList:
+    print(course.courseID, course.getTimes())
+m.cal.getFreeTimeStarts()
+for x in range(0, 7):
+    m.cal.addGCSchedule(m.cal.weekObj[0][x], "schedule")
+# m.cal.clearCal()

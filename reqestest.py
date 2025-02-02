@@ -2,11 +2,11 @@ import PIL.Image
 import google.generativeai as genai
 import time
 
-with open('keys/gemini.txt', 'r') as file:
-    key = file.read()
+# with open('keys/gemini.txt', 'r') as file:
+#     key = file.read()
 
-genai.configure(api_key=key)
-model = genai.GenerativeModel(model_name = "gemini-1.5-flash")
+# genai.configure(api_key=key)
+# model = genai.GenerativeModel(model_name = "gemini-1.5-flash")
 
 def ask_gemini(model, prompt, images):
     responses = []
@@ -127,12 +127,12 @@ What are the important dates for this course? Please provide me with a list desc
 # print("\n\nHAIIIII")
 # print(events)
 
-responses = ask_gemini(model, prompt_schedule, images)
+#responses = ask_gemini(model, prompt_schedule, images)
 
-for response in responses:
-    print(response)
-    print("\n\n")
+# for response in responses:
+#     print(response)
+#     print("\n\n")
 
-schedule_or_events = process_gemini(responses)
+# schedule_or_events = process_gemini(responses)
 
-print(schedule_or_events)
+# print(schedule_or_events)

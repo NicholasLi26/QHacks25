@@ -10,6 +10,9 @@ class day:
         self.events = []
         self.freeTimeRemoved = 0
         self.wake = 0
+        self.ranges = []
+        self.starts = []
+        self.tensInd = []
     
     def addEvent(self, event, start, end):
         
@@ -27,8 +30,11 @@ class day:
                 break
         
         if not full:
-            if startH == endH:
-                self.hours[startH-1].sameHour(event, startT, endT)
+            if startH == endH or startH == endH - 1 and endT == 0:
+                if endT != 0:
+                    self.hours[startH-1].sameHour(event, startT, endT)
+                else:
+                    self.hours[startH].sameHour(event, startT, 6)
             else:
                 for x in range(startH, endH+1):
                     if not added:
@@ -44,7 +50,7 @@ class day:
                         
         if added:
             if event not in self.events:
-                self.events.append(event)
+                self.events.append([event, [startH, startT], [endH, endT]])
             self.freeTimeChange()
         if not added:
             print(f"Event could not be added for event {event}")
@@ -146,17 +152,53 @@ class day:
     def removeTenMinuteBlocks(self):
         last = ""
         last2 = ""
+        self.tensInd = []
         self.freeTimeRemoved = 0
         for x in range(0, 24):
             for y in range(0, 6):
                 if last == "Empty" and last2 != "Empty" and self.hours[x].tens[y] != "Empty":
                     self.freeTimeRemoved += 1
-                    last2 = last
-                    last = self.hours[x].tens[y]
-                else:
-                    last2 = last
-                    last = self.hours[x].tens[y]
+                    if y!=0:
+                        self.tensInd.append([x,y-1])
+                    elif x!=0:
+                        self.tensInd.append([x-1,5]) 
+                last2 = last
+                last = self.hours[x].tens[y]
+                
         self.freeTime -= self.freeTimeRemoved
+        
+    
+    def getIndexOfStart(self):
+        last = ""
+        self.starts = []
+        for x in range(0, 24):
+            for y in range(0, 6):
+                if last!= "Empty" and self.hours[x].tens[y] == "Empty" and [x,y] not in self.tensInd:
+                    self.starts.append([x,y])
+                last = self.hours[x].tens[y]
+        
+    
+    def getRangeOfStarts(self):
+        
+        self.ranges = []
+        counter = 0
+        self.getIndexOfStart()
+        print(self.starts,1)
+        print(self.tensInd,2) 
+
+        for x, y in self.starts:
+            while self.hours[x].tens[y] == "Empty":
+                counter += 1
+                y += 1
+                if y == 6:
+                    y = 0
+                    x += 1
+                if x == 24:
+                    break
+            self.ranges.append(counter)
+            counter = 0
+            
+        
         
     
     

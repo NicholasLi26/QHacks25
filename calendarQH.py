@@ -1,5 +1,16 @@
 import time
 import objects.day as d
+import os.path
+import datetime as dt
+
+from google.auth.transport.requests import Request
+from google.oauth2.credentials import Credentials
+from google_auth_oauthlib.flow import InstalledAppFlow
+from googleapiclient.discovery import build
+from googleapiclient.errors import HttpError
+
+
+SCOPES = ['https://www.googleapis.com/auth/calendar']
 
 class calendarQH:
     def __init__(self):
@@ -12,12 +23,29 @@ class calendarQH:
         self.baseDays = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"]
         self.baseMonths = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"]  
         self.daysInCal = self.makeNumCalendar()
-        self.monthOffsets = [0,]
         self.weekObj = [[d.day(self.baseDays[i], self.daysInCal[j][i][1], self.daysInCal[j][i][0]) for i in range(7)]for j in range(12)]
         self.sleep = 0
         self.wake = 0
         self.ideal = 0
-              
+        self.service = None
+
+        self.creds = None
+
+        if os.path.exists('token.json'):
+            self.creds = Credentials.from_authorized_user_file('token.json')
+
+        if not self.creds or not self.creds.valid:
+            if self.creds and self.creds.expired and self.creds.refresh_token:
+                self.creds.refresh(Request())
+            
+            else:
+                flow = InstalledAppFlow.from_client_secrets_file('credentials.json', SCOPES)
+                self.creds = flow.run_local_server(port=0)
+                
+            with open("token.json", "w") as token:
+                token.write(self.creds.to_json())
+        
+    
     def makeNumCalendar(self):
         copy = self.baseN
         index = 0
@@ -110,5 +138,91 @@ class calendarQH:
     def printWeekThings(self, week):
         for day in self.weekObj[week]:
             print(day.day, day.events)
+
+    def getFreeTimeStarts(self):
+        starts = []
+        for week in self.weekObj:
+            for day in week:
+                day.getRangeOfStarts()
+                starts.append(day.ranges)
+                print(day.day, day.ranges,3)
+        return starts
+
+    def testingGettingFreeTimeStarts(self):
+        starts = []
+        day = self.weekObj[0][1]
+        day.getRangeOfStarts()
+        print(day.ranges)
+    
+    def addCourses(self):
+        for week in self.weekObj:
+            for day in week:
+                self.addGCSchedule(day, "schedule")
+    
+    def addCoursesWeek(self, week):
+        for day in self.weekObj[week]:
+            self.addGCSchedule(day, "schedule")
+
+    def addGCSchedule(self, day, type):
+        try:
+            if type == "schedule":
+                colorID = 7
+            elif type == "event":
+                colorID = 5
+            else:
+                colorID = 2
+            
+            if self.service == None:
+                self.service = build("calendar", "v3", credentials=self.creds)
+
+            for event, start, end in day.events:
+                startH = start[0]
+                startT = str(start[1]) + "0"
+                endH = end[0]
+                endT = str(end[1]) + "0"
+                month = self.baseMonths.index(day.month) + 1
+                if month < 10:
+                    month = "0" + str(month)
+                else:
+                    month = str(month)
+                if day.num < 10:
+                    num = "0" + str(day.num)
+                else:
+                    num = str(day.num)
+                
+                if startH < 10:
+                    start = "0" + str(startH)
+                else:
+                    start = str(startH)
+                if endH < 10:
+                    end = "0" + str(endH)
+                else:
+                    end = str(endH)
+            
+                event = {
+                    'summary': event,
+                    'colorId': colorID,
+                    'start': {
+                        'dateTime': f'{self.baseY}-{month}-{num}T{start}:{str(startT)}:00',
+                        'timeZone': 'America/Toronto'
+                    },
+                    'end': {
+                        'dateTime': f'{self.baseY}-{month}-{num}T{end}:{str(endT)}:00',
+                        'timeZone': 'America/Toronto'
+                    }
+                }
+
+                event = self.service.events().insert(calendarId='primary', body=event).execute()
+
+                print(f"Event created: {event.get('htmlLink')}")
+            
+        except HttpError as error:
+            print(f'An error occurred: {error}')
+    
+    def clearCal(self):
+        self.service.clear(calendarId='primary').execute()
+    
+
+              
         
 

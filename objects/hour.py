@@ -43,7 +43,7 @@ class hour:
         noContention = True
         temp = self.tens.copy()
 
-        for x in range(start-1, end):
+        for x in range(start, end):
             if self.tens[x] != "Empty":
                 noContention = False
                 break
